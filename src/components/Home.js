@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { firestore } from "../firebase";
 
-function Home() {
-    const [posts,setPosts] = useState([]);
+function Home(props) {
+    const [posts, setPosts] = useState([]);
     useEffect(() => {
         firestore.collection('posts').orderBy('createdAt').get().then((snapshot) => {
             const posts = snapshot.docs.map((doc) => {
@@ -15,10 +15,11 @@ function Home() {
             console.log(posts);
             setPosts(posts);
         });
-    },[]);
+    }, []);
 
-    function getPosts(){
+    const getPosts = () => {
         firestore.collection('posts').orderBy('createdAt').get().then((snapshot) => {
+            console.log('getposts called');
             const posts = snapshot.docs.map((doc) => {
                 return {
                     id: doc.id,
@@ -31,8 +32,9 @@ function Home() {
     }
 
     function handleDelete(id) {
-        console.log('button clicked',id);
-        firestore.collection('posts').doc(id).delete().then(()=>{
+        console.log('button clicked', id);
+        props.showAlert("Blog Removed.");
+        firestore.collection('posts').doc(id).delete().then(() => {
             console.log("Document successfully deleted!");
         }).catch((error) => {
             console.error("Error removing document: ", error);
@@ -41,21 +43,21 @@ function Home() {
     }
 
     return (
-    <div className="home">
-        <h1>Tech Blog</h1>
-        <div id="blog-by">Rohan Rana</div>
-        {posts.map((post, index) => (
-            <div className="post" style={styles.div} key={`post-${index}`}>
-                <Link to={`/post/${post.id}`}>
-                    <h3>{post.title}</h3>
-                </Link>
-                <p>{post.subTitle}</p>
-                <div>
-                <button style={styles.button} onClick={() => {handleDelete(post.id)}}>X</button>
-                </div>
-            </div>
-        ))}
-    </div>
+        <div className="home">
+            <h1 className="display-1" style={{ color: props.mode === 'light' ? '#042743' : 'white' }}>TechBlogsDaily</h1>
+            <div className="mt-3" style={{ color: props.mode === 'light' ? '#042743' : '#9c9c9c' }}>By Rohan Rana</div>
+            {posts.map((post, index) => (
+                <>
+                    <div className="card w-75 my-3" key={`post-${index}`}>
+                        <div className="card-body" style={{backgroundColor: props.mode === 'light' ? 'white' : '#042743', borderRadius: '0.375rem'}}>
+                            <Link style={{ textDecoration: 'none' }} to={`/post/${post.id}`}><h5 className="card-title">{post.title}</h5></Link>
+                            <p className="card-text" style={{ color: props.mode === 'light' ? '#042743' : 'white' }}>{post.subTitle}</p>
+                            <button onClick={() => { handleDelete(post.id) }} className={`btn btn-outline-${props.mode === 'light' ? 'danger' : 'light'} delete-btn`}>Delete</button>
+                        </div>
+                    </div>
+                </>
+            ))}
+        </div>
     );
 }
 
@@ -63,16 +65,16 @@ export default Home;
 
 
 
-const styles = {
-    button: {
-        position: 'absolute',
-        right: 10,
-        top: 20
-    },
+// const styles = {
+//     button: {
+//         position: 'absolute',
+//         right: 10,
+//         top: 20
+//     },
 
-    div: {
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative'
-    }
-}
+//     div: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         position: 'relative'
+//     }
+// }

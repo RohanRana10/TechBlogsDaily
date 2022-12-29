@@ -3,7 +3,7 @@ import { firestore } from '../firebase';
 import { useParams } from 'react-router-dom';
 
 
-export default function PostDetail() {
+export default function PostDetail(props) {
     const [post, setPost] = useState({});
     const { postId }  = useParams();
     useEffect(() => {
@@ -15,8 +15,8 @@ export default function PostDetail() {
 
     return (
         <div className='post-detail'>
-            <h1>{post.title}</h1>
-            <p>{post.content}</p>
+            <h1 className='display-3' style={{color: props.mode === 'light' ? '#042743' : '#878787'}}>{post.title}</h1>
+            <p className='w-50 my-4' style={{color: props.mode === 'light' ? '#042743' : 'white'}}>{post.content}</p>
         </div>
     )
 }
