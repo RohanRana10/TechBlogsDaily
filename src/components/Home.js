@@ -63,8 +63,6 @@ function Home(props) {
 
 export default Home;
 
-
-
 // const styles = {
 //     button: {
 //         position: 'absolute',

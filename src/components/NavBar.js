@@ -19,12 +19,14 @@ function Navbar(props) {
                             </li>
                         </ul>
 
-                        <span className={`text-${props.mode === 'light' ? 'dark' : 'light'}`} style={{ marginRight: 10,marginBottom: 2}}>
+                        <div style={{display: 'flex'}}>
+                        <span className={`text-${props.mode === 'light' ? 'dark' : 'light'}`} style={{ marginRight: 7,marginBottom: 2}}>
                             <i className="fa-regular fa-sun"></i>
                         </span>
                         <div style={{ marginRight: 5 }} className={`form-check form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`}>
                             <input className="form-check-input" onClick={props.toggleMode} type="checkbox" role="switch" id="flexSwitchCheckDefault" />
                             <label className="form-check-label" htmlFor="flexSwitchCheckDefault"><i style={{ marginLeft: -1 }} className="fa-sharp fa-solid fa-moon"></i></label>
+                        </div>
                         </div>
                     </div>
                 </div>
